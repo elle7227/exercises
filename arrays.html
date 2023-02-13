@@ -1,0 +1,55 @@
+<script>
+  const people= ["harry", "ron", "hermione"];
+  //making an empty variable to store the results
+  let result;
+//adding draco to the result array
+  result= people.push("draco");
+  //showing the objects in array
+  console.log(result);
+  //showing the amount of objects in array
+  console.log(people);
+
+//.pop() is removing or adding again, the last object in array
+  result=people.pop();
+   //showing the objects in array
+  console.log(people);
+   //showing the last objects in array we just removed
+  console.log(result);
+
+//pushing (adding) several objects to the array
+  result= people.push("neville", "luna");
+  //showing the objects in array
+  console.log(people);
+  //showing the amount of objects in array now
+  console.log(result);
+
+// vi slice the array to showing only objects from number 2 to 5.
+result=people.slice(2,5);
+//showing the sliced array
+console.log(result);
+//showing the full array
+console.log(people);
+
+//adding an object called "cho" to array between first and second object
+result=people.splice(1,0,"cho");
+//showing the array now with cho added
+console.log(people);
+
+//changing the name of object 1 (second name in array) to Ginny
+people[1]="ginny";
+//showing the array now with changed name
+console.log(people);
+
+//showing index of the object luna
+result=people.indexOf("luna");
+//showing the index of luna
+console.log(result);
+
+
+result=people.splice(result,1);
+//showing the array where the last object is removed (luna)
+console.log(people);
+//showing the name/object that we removed from array
+console.log(result);
+
+</script>

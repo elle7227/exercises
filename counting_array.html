@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>counting</title>
+</head>
+<body>
+    <h1 id="array"></h1>
+</body>
+</html>
+
+<script>
+"use strict";
+const array = ["1","2","3","4","5","6","7","8","9","10"];
+array.textContent;
+document.querySelector("#array").textContent="";
+let counter;
+
+
+
+let iterator=0;
+let maxNumberIterations;
+let delay; 
+initloop();
+
+    function initloop(){
+        console.log("initLoop");
+        maxNumberIterations = array.length;
+        delay=200;
+        loop();
+
+    }
+    
+    function loop(){
+        console.log("loop",array [iterator]);
+        iterator ++;
+        document.querySelector("#array").textContent += array[iterator];
+
+        if(iterator< maxNumberIterations){
+            setTimeout(loop,delay);
+        }  
+
+    }
+
+
+</script>
