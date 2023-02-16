@@ -23,7 +23,7 @@ consoleCap("ellen hein bent sørensen");
 
 
 function showFullName(firstname,secondname,thirdname){
-    console.log(`${firstname} ${secondname} ${thirdname}`);
+    console.log("console 1" + `${firstname} ${secondname} ${thirdname}`);
     }
     showFullName("ellen", "hein", "Sørensen");
 
@@ -31,5 +31,15 @@ function showFullName(firstname,secondname,thirdname){
     // const fristname= blavla; 
     // const secondname= blavla; 
     
+//showing names from parameter (use this method!!)
+    function fullName2(lastname, firstname, middlename) {
+        if (middlename === undefined) {
+          console.log(firstname + ' ' + lastname);
+        } else {
+          console.log(firstname + ' ' + middlename + ' ' + lastname);
+        }
+      }
+      fullName2("sørensen", "ellen", "hein");
 
+      
 

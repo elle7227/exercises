@@ -8,8 +8,12 @@ console.log(secondLetter);
 
 //capitalize first letter in the parameter (str)
 function consoleCap(str ){
-console.log(str.charAt(4).toUpperCase()+ str.slice(1));
+console.log(str.charAt(0).toUpperCase()+ str.slice(1).toLowerCase());;
 }
 
 //setting parameter to ellen, so we console log Ellen 
-consoleCap(`ellen`);
+consoleCap(`eLlen hein`);
+
+const str= "eLLen";
+const cap = consoleCap( str );
+console.log(cap);
