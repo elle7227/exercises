@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+</head>
+<body>
+    
+</body>
+</html>
+
+<script>
+"use strict"
+
+function greeting(firstname){
+    return `hello ${firstname}`
+}
+const sayHi = greeting;
+console.log(sayHi("class"));
+
+
+
+
+const person4 ={
+    firstName: "fred",
+    lastName: "weasley",
+    hired:false
+}
+
+const person3 ={
+    firstName: "harry",
+    lastName: "potter",
+    hired:false
+}
+
+function hire(person){
+    person.hired= true;
+}
+
+function fire(person){
+    person.hired= false;
+}
+
+function fireOrhire(thefunction, theParameterForTheFunction){
+    thefunction(theParameterForTheFunction);
+}
+
+
+function fireOrhire(action, person){
+    action(person);
+}
+console.log(person4);
+fireOrhire(hire,person4);
+
+
+
+//const url = "animals.json";
+loadJSON("animals.json",callback);
+
+async function loadJSON(url, callback){
+const respons= await fetch(url);
+const jsonData = await respons.json();
+callback(jsonData);
+}
+
+function callback(jsonData){
+    console.log("prepare data");
+    console.table(jsonData);
+}
+
+
+
+//ARROW AND ANNONYMUS FUNCTIONS
+const people = ["harry", "mark", "john", "louu"];
+
+//dette er en måde at gøre det på (annonym funktion)
+function sayHello(person){
+console.log(`${person} says hello`);
+}
+people.forEach(sayHello);
+
+//dette er en anden måde at gøre det på, som gør det samme som ovenover (arrow funktion)
+people.forEach((person)=> {
+console.log(` metode to: ${person} says hello`);
+});
+
+
+
+
+//callback function calles with several parameters
+function testParams(a, b, c, d){
+    console.log(`a:${a}, b:${b}, c:${c}, d:${d},`);
+}
+
+people.forEach(testParams);
+
+//dette er en anden måde at gøre det på som gøres ovenover
+people.forEach((a, b, c, d)=> {
+    console.log(`metode to a:${a}, b:${b}, c:${c}, d:${d}`);
+});
+
+
+
+
+
+
+
+</script>
