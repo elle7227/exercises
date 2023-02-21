@@ -1,8 +1,15 @@
 "use strict";
 
 window.addEventListener("DOMContentLoaded", start);
-let filter="all";
+let filterBy="all";
 let allAnimals = [];
+
+const settings = {
+    filter:"all",
+    sortBy: "name",
+    sortDir: "asc"
+
+}
 
 // The prototype for all animals: 
 const Animal = {
@@ -58,25 +65,23 @@ function preapareObject( jsonObject ) {
 function selectFilter(event){
 const filter = event.target.dataset.filter;
 console.log(`user selected ${filter}`);
-filterlist(filter);
+setFilter(filter);
 }
 
-function selectSort(event){
-    const sortBy = event.target.dataset.sort;
-    console.log(`user selected ${sortBy}`);
-    sortList(sortBy);
-    }
+function setFilter(filter){
+    settings.filterBy = filter;
+    buildList();
+}
 
-function filterlist(animalType){
-    let filteredList = allAnimals;
-    if(animalType === "cat"){
+function filterlist(filteredList){
+    //let filteredList = allAnimals;
+    if(settings.filterBy === "cat"){
         filteredList = allAnimals.filter(isCat);
-    } else if(animalType ===  "dog"){
+    } else if(settings.filterBy   ===  "dog"){
         filteredList = allAnimals.filter(isDog);
    }
-    displayList(filteredList);
+    return (filteredList);
 }
-
 
 
 function isCat (animal){
@@ -93,25 +98,63 @@ function isDog (animal){
         else{
             return false; 
         }
-}      
+}   
 
-function sortList(sortBy){
-let sortedList = allAnimals;
-if(sortBy ==="name"){
-    sortedList = sortedList.sort(sortByname);
-}else if(sortBy==="type"){
-    sortedList = sortedList.sort(sortByType);
-}
-displayList(sortedList);
-}
+function selectSort(event){
+     const sortBy = event.target.dataset.sort;
+    const sortDir = event.target.dataset.sortDirection;
 
-function sortByname(a,b){
-    if(a.name< b.name){
-        return-1;
-    }else{
-        return 1;
+    if(sortDir==="asc"){
+        event.target.dataset.sortDirection = "desc";
     }
+    else{
+        event.target.dataset.sortDirection = "asc";  
+    }
+
+    //console.log(`user selected ${sortBy} - ${sortDir}`);
+    setSort(sortBy, sortDir);
 }
+
+function setSort(sortBy, sortDir){
+settings.sortBy= sortBy; 
+settings.sortDir = sortDir;
+buildList();
+}
+
+
+function sortList(sortedList){
+    //let sortedList = allAnimals;
+    let direction = 1;
+
+    if (settings.sortDir === "desc"){
+        direction=-1;
+    }else {
+        direction=1;
+    }
+    sortedList = sortedList.sort(sortByProperty);
+  
+
+    function sortByProperty(a,b){
+       
+        if(a[settings.sortBy]< b[settings.sortBy]){
+            return -1*direction;
+        }else{
+            return 1*direction;
+        }
+    }
+
+    return sortedList;
+}
+
+
+function buildList(){
+    const currentList = filterlist(allAnimals);
+    const sortedList = sortList(currentList);
+
+    displayList(sortedList);
+}
+
+
 
 function sortByType(a,b){
     if(a.type< b.type){
