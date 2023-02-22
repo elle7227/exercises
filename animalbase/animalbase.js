@@ -16,7 +16,9 @@ const Animal = {
     name: "",
     desc: "-unknown animal-",
     type: "",
-    age: 0
+    age: 0,
+    star: false,
+    winner: false
 };
 
 function start( ) {
@@ -44,10 +46,9 @@ async function loadJSON() {
 
 function prepareObjects( jsonData ) {
     allAnimals = jsonData.map( preapareObject );
-    // TODO: This might not be the function we want to call first
 
-    displayList(allAnimals);
-
+    // calling this function so we filter and sort on the first load
+    buildList();
 }
 
 
@@ -101,8 +102,14 @@ function isDog (animal){
 }   
 
 function selectSort(event){
-     const sortBy = event.target.dataset.sort;
+    const sortBy = event.target.dataset.sort;
     const sortDir = event.target.dataset.sortDirection;
+
+
+    const oldElement = document.querySelector(`[data-sort="${settings.sortBy}"]`);
+
+    oldElement.classList.remove("sortby");
+    event.target.classList.add("sortby");
 
     if(sortDir==="asc"){
         event.target.dataset.sortDirection = "desc";
@@ -155,7 +162,6 @@ function buildList(){
 }
 
 
-
 function sortByType(a,b){
     if(a.type< b.type){
         return-1;
@@ -181,10 +187,121 @@ function displayAnimal( animal ) {
     clone.querySelector("[data-field=desc]").textContent = animal.desc;
     clone.querySelector("[data-field=type]").textContent = animal.type;
     clone.querySelector("[data-field=age]").textContent = animal.age;
-    // append clone to list
-    document.querySelector("#list tbody").appendChild( clone );
+
+    if(animal.star===true){
+        clone.querySelector("[data-field=star]").textContent = "⭐";
+    }else{
+        clone.querySelector("[data-field=star]").textContent = "☆";
+    }
+
+    clone.querySelector("[data-field=star]").addEventListener("click", clickStar);
+
+    function clickStar(){
+        if(animal.star===true){
+            animal.star =false;
+        }else{
+            animal.star=true;
+        }
+        buildList();
+    }
+
+    clone.querySelector("[data-field=winner]").dataset.winner = animal.winner;
+    clone.querySelector("[data-field=winner]").addEventListener("click", clickWinner);
+
+    function clickWinner(){
+        if(animal.winner===true){
+            animal.winner =false;
+        }else{
+            tryToMakeAWinner(animal);
+        }
+        buildList();
+    }
+        // append clone to list
+        document.querySelector("#list tbody").appendChild( clone );
+    
 }
 
+function tryToMakeAWinner(selectedAnimal){
+ 
+    const winners = allAnimals.filter(animal => animal.winner);
+    console.log(winners);
 
-        
+    const numberOfWinners = winners.length;
+    const other = winners.filter(animal=> animal.type ===selectedAnimal.type).shift();
 
+    //if there is another of the same type
+    if(other !==undefined){
+        removeOther(other);
+    }else if(numberOfWinners >= 2){
+        removeAorB(winners[0], winners[1]);
+    }else{
+        makeWinner(selectedAnimal);
+    }
+
+    function removeOther(other){
+        //ask user to ignore og remove other
+        document.querySelector("#remove_other").classList.remove("hide");
+        document.querySelector("#remove_other .closebutton").addEventListener("click", closeDialog);
+        document.querySelector("#remove_other #remove_other_button").addEventListener("click", clickRemoveOther);
+  
+        //if ignore do nothing 
+        function closeDialog(){
+            document.querySelector("#remove_other").classList.add("hide");
+            document.querySelector("#remove_other .closebutton").removeEventListener("click", closeDialog);
+        document.querySelector("#remove_other #remove_other_button").removeEventListener("click", clickRemoveOther);
+        }
+
+        //if remove other:
+        function clickRemoveOther(){
+            removeWinner(other);
+            makeWinner(selectedAnimal);
+            buildList();
+            closeDialog();
+        }
+      
+    }
+
+    function removeAorB(winnerA, winnerB){
+        //ask user to ignore og remove a or b
+
+        document.querySelector("#remove_aorb").classList.remove("hide");
+        document.querySelector("#remove_aorb .closebutton").addEventListener("click", closeDialog);
+        document.querySelector("#remove_aorb #remove_a").addEventListener("click", clickRemoveA);
+        document.querySelector("#remove_aorb #remove_b").addEventListener("click", clickRemoveB);
+
+        //if ignore do nothing 
+        function closeDialog(){
+            document.querySelector("#remove_aorb").classList.add("hide");
+            document.querySelector("#remove_aorb .closebutton").removeEventListener("click", closeDialog);
+            document.querySelector("#remove_aorb #remove_a").removeEventListener("click", clickRemoveA);
+            document.querySelector("#remove_aorb #remove_b").removeEventListener("click", clickRemoveB);
+        }
+
+         //if remove a 
+        function clickRemoveA(){
+            removeWinner(winnerA);
+            makeWinner(selectedAnimal);
+            buildList();
+            closeDialog();
+        }
+   
+
+        //if remove b
+        function clickRemoveB(){
+            removeWinner(winnerB);
+            makeWinner(selectedAnimal);  
+            buildList();
+            closeDialog();
+        }
+         
+    }
+
+    function removeWinner(winnerAnimal){
+        winnerAnimal.winner = false;
+    }
+
+    function makeWinner(animal){
+        animal.winner=true; 
+    }
+}
+  
